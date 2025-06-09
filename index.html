@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Result Management System</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -16,6 +17,7 @@
             background-color: #f5f5f5;
             padding: 20px;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .result-border {
@@ -25,6 +27,7 @@
             border: 3px solid #000;
             padding: 30px;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         .result-header {
@@ -33,6 +36,8 @@
             border-bottom: 2px solid #000;
             padding-bottom: 20px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .result-logo {
@@ -43,6 +48,7 @@
 
         .school-info {
             flex: 1;
+            min-width: 200px;
         }
 
         .school-info h2 {
@@ -59,6 +65,7 @@
         .session-info {
             text-align: right;
             font-size: 14px;
+            min-width: 150px;
         }
 
         .term-title {
@@ -78,10 +85,12 @@
             padding: 20px;
             border: 2px solid #000;
             background: #f8f9fa;
+            flex-wrap: wrap;
         }
 
         .student-details {
             flex: 1;
+            min-width: 280px;
         }
 
         .student-details table {
@@ -99,6 +108,8 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .student-avatar img {
@@ -116,6 +127,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .section-header h3 {
@@ -131,6 +144,8 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .subject-entry {
@@ -138,13 +153,17 @@
             gap: 10px;
             margin-bottom: 10px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .subject-entry input {
             flex: 1;
+            min-width: 150px;
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .remove-subject {
@@ -154,6 +173,8 @@
             padding: 8px 15px;
             border-radius: 4px;
             cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .btn-generate {
@@ -166,6 +187,8 @@
             font-size: 16px;
             font-weight: bold;
             transition: background 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .btn-generate:hover {
@@ -183,142 +206,248 @@
             position: absolute;
             top: 20px;
             right: 20px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .logout-btn:hover {
             background: #c82333;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .result-border {
+                padding: 20px;
+                border-width: 2px;
+            }
+
+            .result-header {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .result-logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .school-info {
+                text-align: center;
+            }
+
+            .school-info h2 {
+                font-size: 28px;
+            }
+
+            .session-info {
+                text-align: center;
+                width: 100%;
+            }
+
+            .term-title {
+                font-size: 24px;
+            }
+
+            .student-info-box {
+                padding: 15px;
+            }
+
+            .student-avatar {
+                margin: 0 auto;
+            }
+
+            .section-header {
+                justify-content: center;
+            }
+
+            .subject-entry {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .subject-entry input {
+                width: 100%;
+            }
+
+            .remove-subject {
+                width: 100%;
+            }
+
+            .btn-generate {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .logout-btn {
+                position: static;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .result-border {
+                padding: 15px;
+            }
+
+            .school-info h2 {
+                font-size: 24px;
+            }
+
+            .term-title {
+                font-size: 20px;
+            }
+
+            .student-details input,
+            .student-details select {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+        }
+
+        /* Prevent zoom on input focus for iOS */
+        @supports (-webkit-touch-callout: none) {
+            input[type="text"],
+            input[type="number"],
+            select {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="result-border">
-    <button id="logoutBtn" class="logout-btn">Logout</button>
-    <div class="result-header">
-        <img src="./img/logo.jpg" alt="School Logo" class="result-logo">
-        <div class="school-info">
-            <h2>THE WISER SCHOOL SYSTEM</h2>
-        </div>
-        <div class="session-info">
-            <span>Session: <input type="number" name="year" id="year-session" min="2000" max="2100" value="2024" style="width:60px; font-size:1rem; border:1px solid #bbb; border-radius:4px; padding:2px 4px;">-2025</span>
-        </div>
-    </div>
-    <div class="term-title">Generate Student Result</div>
-    <form id="resultForm" action="report_card.html" method="get" target="_blank" class="front-form">
-        <input type="hidden" name="year" id="hidden-year" value="2024">
-        <div class="student-info-box">
-            <div class="student-details">
-                <table>
-                    <tr>
-                        <td><b>Class</b></td>
-                        <td>
-                            <select name="class" required style="width:120px;">
-                                <option value="">Select</option>
-                                <option value="Play Group">Play Group</option>
-                                <option value="K.G 1">K.G 1</option>
-                                <option value="K.G 2">K.G 2</option>
-                                <option value="Class 1">Class 1</option>
-                                <option value="Class 2">Class 2</option>
-                                <option value="Class 3">Class 3</option>
-                                <option value="Class 4">Class 4</option>
-                                <option value="Class 5">Class 5</option>
-                                <option value="Class 6">Class 6</option>
-                                <option value="Class 7">Class 7</option>
-                                <option value="Class 8">Class 8</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><b>Student Name</b></td>
-                        <td><input type="text" name="name" required placeholder="Enter student's name"></td>
-                    </tr>
-                    <tr>
-                        <td><b>Father Name</b></td>
-                        <td><input type="text" name="father_name" required placeholder="Enter father's name"></td>
-                    </tr>
-                    <tr>
-                        <td><b>Term</b></td>
-                        <td>
-                            <select name="term" required style="width:120px;">
-                                <option value="">Select</option>
-                                <option value="First">1st Term</option>
-                                <option value="Second">2nd Term</option>
-                                <option value="Final">3rd Term</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
+    <div class="result-border">
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+        <div class="result-header">
+            <img src="./img/logo.jpg" alt="School Logo" class="result-logo">
+            <div class="school-info">
+                <h2>THE WISER SCHOOL SYSTEM</h2>
             </div>
-            <div class="student-avatar">
-                <img src="./img/student.webp" alt="Avatar">
+            <div class="session-info">
+                <span>Session: <input type="number" name="year" id="year-session" min="2000" max="2100" value="2024" style="width:60px; font-size:1rem; border:1px solid #bbb; border-radius:4px; padding:2px 4px;">-2025</span>
             </div>
         </div>
-        <div class="subjects-section">
-            <div class="section-header">
-                <h3>Subject Details</h3>
-                <button type="button" id="add-subject" class="btn-add">Add Subject</button>
-            </div>
-            <div id="subjects-container">
-                <div class="subject-entry">
-                    <input type="text" name="subjects[]" placeholder="Subject Name" required>
-                    <input type="number" name="total_marks[]" placeholder="Total Marks" required>
-                    <input type="number" name="obtained_marks[]" placeholder="Obtained Marks" required>
-                    <button type="button" class="remove-subject" style="display: none;">Remove</button>
+        <div class="term-title">Generate Student Result</div>
+        <form id="resultForm" action="report_card.html" method="get" target="_blank" class="front-form">
+            <input type="hidden" name="year" id="hidden-year" value="2024">
+            <div class="student-info-box">
+                <div class="student-details">
+                    <table>
+                        <tr>
+                            <td><b>Class</b></td>
+                            <td>
+                                <select name="class" required style="width:120px;">
+                                    <option value="">Select</option>
+                                    <option value="Play Group">Play Group</option>
+                                    <option value="K.G 1">K.G 1</option>
+                                    <option value="K.G 2">K.G 2</option>
+                                    <option value="Class 1">Class 1</option>
+                                    <option value="Class 2">Class 2</option>
+                                    <option value="Class 3">Class 3</option>
+                                    <option value="Class 4">Class 4</option>
+                                    <option value="Class 5">Class 5</option>
+                                    <option value="Class 6">Class 6</option>
+                                    <option value="Class 7">Class 7</option>
+                                    <option value="Class 8">Class 8</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Student Name</b></td>
+                            <td><input type="text" name="name" required placeholder="Enter student's name"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Father Name</b></td>
+                            <td><input type="text" name="father_name" required placeholder="Enter father's name"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Term</b></td>
+                            <td>
+                                <select name="term" required style="width:120px;">
+                                    <option value="">Select</option>
+                                    <option value="First">1st Term</option>
+                                    <option value="Second">2nd Term</option>
+                                    <option value="Final">3rd Term</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="student-avatar">
+                    <img src="./img/student.webp" alt="Avatar">
                 </div>
             </div>
-        </div>
-        <div class="form-actions" style="text-align:center; margin:20px 0 10px 0;">
-            <button type="submit" class="btn-generate">Generate Result</button>
-        </div>
-    </form>
-</div>
+            <div class="subjects-section">
+                <div class="section-header">
+                    <h3>Subject Details</h3>
+                    <button type="button" id="add-subject" class="btn-add">Add Subject</button>
+                </div>
+                <div id="subjects-container">
+                    <div class="subject-entry">
+                        <input type="text" name="subjects[]" placeholder="Subject Name" required>
+                        <input type="number" name="total_marks[]" placeholder="Total Marks" required>
+                        <input type="number" name="obtained_marks[]" placeholder="Obtained Marks" required>
+                        <button type="button" class="remove-subject" style="display: none;">Remove</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions" style="text-align:center; margin:20px 0 10px 0;">
+                <button type="submit" class="btn-generate">Generate Result</button>
+            </div>
+        </form>
+    </div>
 
-<script>
-    // Check if user is logged in
-    if (!localStorage.getItem('isLoggedIn')) {
-        window.location.href = 'login.html';
-    }
-
-    // Logout functionality
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        localStorage.removeItem('isLoggedIn');
-        window.location.href = 'login.html';
-    });
-
-    document.getElementById('year-session').addEventListener('change', function() {
-        document.getElementById('hidden-year').value = this.value;
-    });
-
-    document.getElementById('add-subject').addEventListener('click', function() {
-        const container = document.getElementById('subjects-container');
-        const newRow = document.createElement('div');
-        newRow.className = 'subject-entry';
-        newRow.innerHTML = `
-            <input type="text" name="subjects[]" placeholder="Subject Name" required>
-            <input type="number" name="total_marks[]" placeholder="Total Marks" required>
-            <input type="number" name="obtained_marks[]" placeholder="Obtained Marks" required>
-            <button type="button" class="remove-subject">Remove</button>
-        `;
-        container.appendChild(newRow);
-
-        // Show remove button on first row if there's more than one row
-        const rows = container.querySelectorAll('.subject-entry');
-        if (rows.length > 1) {
-            rows[0].querySelector('.remove-subject').style.display = 'block';
+    <script>
+        // Check if user is logged in
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
         }
-    });
 
-    document.getElementById('subjects-container').addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-subject')) {
-            const row = e.target.parentElement;
-            row.remove();
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        });
 
-            // Hide remove button on first row if only one row remains
-            const rows = document.querySelectorAll('.subject-entry');
-            if (rows.length === 1) {
-                rows[0].querySelector('.remove-subject').style.display = 'none';
+        document.getElementById('year-session').addEventListener('change', function() {
+            document.getElementById('hidden-year').value = this.value;
+        });
+
+        document.getElementById('add-subject').addEventListener('click', function() {
+            const container = document.getElementById('subjects-container');
+            const newRow = document.createElement('div');
+            newRow.className = 'subject-entry';
+            newRow.innerHTML = `
+                <input type="text" name="subjects[]" placeholder="Subject Name" required>
+                <input type="number" name="total_marks[]" placeholder="Total Marks" required>
+                <input type="number" name="obtained_marks[]" placeholder="Obtained Marks" required>
+                <button type="button" class="remove-subject">Remove</button>
+            `;
+            container.appendChild(newRow);
+
+            // Show remove button on first row if there's more than one row
+            const rows = container.querySelectorAll('.subject-entry');
+            if (rows.length > 1) {
+                rows[0].querySelector('.remove-subject').style.display = 'block';
             }
-        }
-    });
-</script>
+        });
+
+        document.getElementById('subjects-container').addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-subject')) {
+                const row = e.target.parentElement;
+                row.remove();
+
+                // Hide remove button on first row if only one row remains
+                const rows = document.querySelectorAll('.subject-entry');
+                if (rows.length === 1) {
+                    rows[0].querySelector('.remove-subject').style.display = 'none';
+                }
+            }
+        });
+    </script>
 </body>
 </html> 
