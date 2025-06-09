@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Login - Result Management System</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -11,6 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -20,6 +21,7 @@
             align-items: center;
             min-height: 100vh;
             padding: 15px;
+            -webkit-font-smoothing: antialiased;
         }
 
         .login-container {
@@ -87,6 +89,8 @@
             font-size: 14px;
             transition: all 0.3s ease;
             background: #f8f9fa;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .form-group input:focus {
@@ -113,6 +117,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 5px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .login-btn:hover {
@@ -136,13 +142,81 @@
             font-size: 13px;
         }
 
+        /* Mobile Responsive Styles */
         @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
             .login-container {
                 padding: 20px;
+                max-width: 100%;
+                margin: 0 10px;
             }
 
             .login-header h1 {
                 font-size: 20px;
+            }
+
+            .login-logo {
+                width: 80px;
+            }
+
+            .form-group input {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 12px;
+            }
+
+            .login-btn {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 360px) {
+            .login-container {
+                padding: 15px;
+            }
+
+            .login-header h1 {
+                font-size: 18px;
+            }
+
+            .login-logo {
+                width: 70px;
+            }
+        }
+
+        /* Landscape Mode */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding: 10px;
+            }
+
+            .login-container {
+                padding: 15px;
+            }
+
+            .login-header {
+                margin-bottom: 10px;
+            }
+
+            .login-logo {
+                width: 60px;
+                margin-bottom: 5px;
+            }
+
+            .form-group {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Prevent zoom on input focus for iOS */
+        @supports (-webkit-touch-callout: none) {
+            input[type="text"],
+            input[type="password"] {
+                font-size: 16px;
             }
         }
     </style>
