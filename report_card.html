@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Report Card</title>
     <style>
-        * {
+        * { 
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -380,8 +380,8 @@
                     <th>Total Marks</th>
                     <th>Obt Marks</th>
                     <th>Per%</th>
-                    <!-- <th>Grade</th> -->
-                    <!-- <th>Status</th> -->
+                    <th>Grade</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody id="gradesTableBody">
@@ -515,8 +515,8 @@
                 <td>${totalMarks[i]}</td>
                 <td>${obtainedMarks[i]}</td>
                 <td>${percentages[i].toFixed(1)}%</td>
-                // <td>${grades[i]}</td>
-                // <td>${statuses[i]}</td>
+                <td>${grades[i]}</td>
+                <td>${statuses[i]}</td>
             `;
             gradesTableBody.appendChild(row);
         }
@@ -525,8 +525,8 @@
         document.getElementById('totalMarks').textContent = totalMax;
         document.getElementById('totalObtained').textContent = totalObtained;
         document.getElementById('totalPercentage').textContent = `${overallPercentage.toFixed(1)}%`;
-        // document.getElementById('overallGrade').textContent = overallGrade;
-        // document.getElementById('overallStatus').textContent = overallStatus;
+        document.getElementById('overallGrade').textContent = overallGrade;
+        document.getElementById('overallStatus').textContent = overallStatus;
 
         // Update performance chart
         const chart = document.getElementById('performanceChart');
