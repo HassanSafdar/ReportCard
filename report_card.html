@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Report Card</title>
     <style>
-        * { 
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -35,24 +35,28 @@
         .logo {
             width: 140px;
             height: 140px;
+            flex-shrink: 0;
         }
 
         .logo img {
             height: 100%;
+            width: 100%;
+            object-fit: contain;
         }
 
         .school-info {
             flex: 1;
+            padding-left: 15px;
         }
 
         .school-name {
-            font-size: 25px;
+            font-size: 24px;
             font-weight: bold;
             margin-bottom: 5px;
         }
 
         .school-details {
-            font-size: 17px;
+            font-size: 16px;
             line-height: 1.4;
         }
 
@@ -61,9 +65,10 @@
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .exam-info .session{
+        .exam-info .session {
             font-size: 16px;
             font-weight: bold;
         }
@@ -71,11 +76,10 @@
         .exam-title {
             background: #e9ecef;
             border: 1px solid #000;
-            padding: 8px;
+            padding: 8px 14px;
             font-size: 16px;
             font-weight: bold;
             display: inline-block;
-            /* margin-bottom: 10px; */
         }
 
         .student-info {
@@ -90,14 +94,11 @@
             border: 1px solid #000;
             border-radius: 10px;
             padding: 15px;
-            margin: 0px auto;
+            margin: 0 auto;
         }
 
         .student-details table {
             width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .student-details td {
@@ -105,20 +106,12 @@
             font-size: 14px;
         }
 
-        /* .student-details td:first-child {
-            font-weight: bold;
-            width: 100px;
-        } */
-
         .student-details td:nth-child(1),
-        .student-details td:nth-child(4),
-        .student-details td:nth-child(7),
-        .student-details td:nth-child(10) {
+        .student-details td:nth-child(4) {
             font-weight: bold;
         }
 
-         .student-details td:nth-child(4),
-        .student-details td:nth-child(9) {
+        .student-details td:nth-child(4) {
             padding-left: 40px;
         }
 
@@ -136,7 +129,7 @@
         .grades-table th,
         .grades-table td {
             border: 1px solid #000;
-            padding: 2px;
+            padding: 3px;
             text-align: center;
             font-size: 12px;
         }
@@ -167,33 +160,12 @@
             padding: 4px 5px;
             font-weight: bold;
             color: #000;
-        }
-
-        .icons-section {
-            display: none;
-            /* display: flex;
-            gap: 10px; */
-        }
-
-        .icon-item {
-            display: flex;
-            padding-top: 5px;
-            font-size: 12px;
-            border: 1px solid #000;
-        }
-
-        .icon {
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f8f9fa;
+            text-align: center;
         }
 
         .bottom-section {
             display: flex;
-            align-items: center;
+            align-items: stretch;
             gap: 20px;
             margin-bottom: 70px;
         }
@@ -227,6 +199,7 @@
             gap: 17px;
             padding: 20px;
             border: 1px solid #000;
+            overflow: visible;
         }
 
         .bar {
@@ -238,7 +211,6 @@
 
         .bar-label {
             position: absolute;
-            /* keep the label centered on the bar, but rotate it vertically */
             bottom: -45px;
             left: 50%;
             transform: translateX(-60%) rotate(-60deg) scale(0.9);
@@ -250,11 +222,11 @@
 
         .bar-value {
             position: absolute;
-            top: -25px;
+            top: -18px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 10px;
-            transform: scale(0.8);
+            white-space: nowrap;
         }
 
         .signatures {
@@ -276,6 +248,57 @@
             height: 20px;
         }
 
+        /* Print button */
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 999;
+        }
+
+        .print-btn:hover { background: #0056b3; }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: #6c757d;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 999;
+        }
+
+        .back-btn:hover { background: #5a6268; }
+
+        /* Mobile */
+        @media (max-width: 640px) {
+            body { padding: 5px; }
+            .report-card { border-width: 3px; padding: 12px; }
+            .header { flex-direction: column; text-align: center; }
+            .logo { width: 100px; height: 100px; }
+            .school-name { font-size: 18px; }
+            .school-details { font-size: 13px; }
+            .student-info { flex-direction: column; }
+            .student-details td { font-size: 12px; }
+            .bottom-section { flex-direction: column; }
+            .signature-line { width: 130px; }
+            .print-btn, .back-btn { padding: 8px 14px; font-size: 13px; }
+        }
+
+        /* Print */
         @media print {
             body {
                 padding: 0;
@@ -284,7 +307,14 @@
 
             .report-card {
                 box-shadow: none;
-                border: none;
+                border: 6px solid #000;
+                max-width: 100%;
+            }
+
+            .print-btn,
+            .back-btn,
+            .no-print {
+                display: none !important;
             }
 
             .bar {
@@ -307,16 +337,27 @@
                 color-adjust: exact !important;
                 background: #f8f9fa !important;
             }
+
+            .grades-table,
+            .signatures,
+            .summary-section {
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="report-card">
+    <button class="back-btn no-print" onclick="history.back()">← Back</button>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Print</button>
+
+    <div class="report-card" id="reportCard">
         <!-- Header -->
         <div class="header">
-            <div class="logo"><img src="./img/logo.jpg" alt=""></div>
+            <div class="logo">
+                <img src="./img/logo.jpg" alt="" onerror="this.style.display='none'">
+            </div>
             <div class="school-info">
-                <div class="school-name">THE WISER SCHOOL SYSTEM & ACADEMY</div>
+                <div class="school-name">THE WISER SCHOOL SYSTEM &amp; ACADEMY</div>
                 <div class="school-details">
                     Lala Zar Colony Bara Dari Road Shahdara Lahore PH: 0320-9514171
                 </div>
@@ -341,8 +382,6 @@
                         <td>Student Name</td>
                         <td>:</td>
                         <td id="studentName"></td>
-
-                        
                     </tr>
                     <tr>
                         <td>Father Name</td>
@@ -351,24 +390,17 @@
 
                         <td>Position</td>
                         <td>:</td>
-                        <td><input type="number" id="studentPosition" style="width: 60px; border: none; background: transparent;" min="1"></td>
-                        <!-- <td>Student Name</td>
-                        <td>:</td>
-                        <td id="studentName"></td> -->
-                    </tr>
-                    <tr>
-                        <!-- <td>Father Name</td>
-                        <td>:</td>
-                        <td id="fatherName"></td> -->
-                    </tr>
-                    <tr>
-                        <!-- <td>Position</td>
-                        <td>:</td>
-                        <td><input type="number" id="studentPosition" style="width: 60px; border: none; background: transparent;" min="1"></td> -->
+                        <td>
+                            <input type="number" id="studentPosition"
+                                   style="width: 60px; border: none; background: transparent; font-size: 14px;"
+                                   min="1">
+                        </td>
                     </tr>
                 </table>
             </div>
-            <div class="student-avatar"><img src="./img/student.webp" alt=""></div>
+            <div class="student-avatar">
+                <img src="./img/student.webp" alt="" onerror="this.style.display='none'">
+            </div>
         </div>
 
         <!-- Grades Table -->
@@ -379,13 +411,12 @@
                     <th>Subjects</th>
                     <th>Total Marks</th>
                     <th>Obt Marks</th>
-                    <th>Per%</th>
-                    <th>Grade</th>
-                    <th>Status</th>
+                    <th id="th-percentage">Per%</th>
+                    <th id="th-grade">Grade</th>
+                    <th id="th-status">Status</th>
                 </tr>
             </thead>
-            <tbody id="gradesTableBody">
-            </tbody>
+            <tbody id="gradesTableBody"></tbody>
         </table>
 
         <!-- Summary Section -->
@@ -394,9 +425,9 @@
                 <tr>
                     <td>Total</td>
                     <td>Obtained</td>
-                    <td>Percentage</td>
-                    <td>Grade</td>
-                    <td>Status</td>
+                    <td id="sum-th-percentage">Percentage</td>
+                    <td id="sum-th-grade">Grade</td>
+                    <td id="sum-th-status">Status</td>
                 </tr>
                 <tr>
                     <td id="totalMarks"></td>
@@ -406,21 +437,6 @@
                     <td id="overallStatus"></td>
                 </tr>
             </table>
-
-            <div class="icons-section">
-                <div class="icon-item">
-                    <div class="icon">✍️</div>
-                    <span>Hand Writing</span>
-                </div>
-                <div class="icon-item">
-                    <div class="icon">👔</div>
-                    <span>Uniform</span>
-                </div>
-                <div class="icon-item">
-                    <div class="icon">📚</div>
-                    <span>Home Work</span>
-                </div>
-            </div>
         </div>
 
         <!-- Bottom Section -->
@@ -432,8 +448,7 @@
 
             <div class="chart-section">
                 <div class="chart-title">Subject Performance</div>
-                <div class="chart" id="performanceChart">
-                </div>
+                <div class="chart" id="performanceChart"></div>
             </div>
         </div>
 
@@ -451,6 +466,24 @@
     </div>
 
     <script>
+        // ============ AUTH CHECK ============
+        (function () {
+            let valid = false;
+            try {
+                const auth = JSON.parse(localStorage.getItem('auth') || '{}');
+                valid = auth.ok && Date.now() < auth.exp;
+            } catch (e) { valid = false; }
+            if (!valid && localStorage.getItem('isLoggedIn') === 'true') valid = true;
+
+            if (!valid) {
+                window.location.href = 'login.html';
+                throw new Error('Not authenticated');
+            }
+        })();
+
+        // ============ HELPERS ============
+        const PASS_MARK = 40; // change here to adjust pass threshold
+
         function calculateGrade(percentage) {
             if (percentage >= 90) return 'A+';
             if (percentage >= 80) return 'A';
@@ -462,89 +495,124 @@
         }
 
         function calculateStatus(percentage) {
-            return percentage >= 40 ? 'Pass' : 'Fail';
+            return percentage >= PASS_MARK ? 'Pass' : 'Fail';
         }
 
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        // Get form data from URL parameters
-        const classValue = urlParams.get('class');
-        const name = urlParams.get('name');
-        const fatherName = urlParams.get('father_name');
-        const term = urlParams.get('term');
-        const year = urlParams.get('year');
-        const subjects = urlParams.getAll('subjects[]');
-        const totalMarks = urlParams.getAll('total_marks[]').map(Number);
-        const obtainedMarks = urlParams.getAll('obtained_marks[]').map(Number);
+        function safePercentage(obtained, total) {
+            if (!Number.isFinite(obtained) || !Number.isFinite(total) || total <= 0) return 0;
+            return Math.min((obtained / total) * 100, 100);
+        }
 
-        // Calculate grades and percentages
+        // ============ READ URL PARAMS ============
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const classValue = urlParams.get('class') || '—';
+        const name       = urlParams.get('name') || '—';
+        const fatherName = urlParams.get('father_name') || '—';
+        const term       = urlParams.get('term') || '';
+        const year       = parseInt(urlParams.get('year'), 10) || new Date().getFullYear();
+
+        // Since the form always sends a value (hidden input = '0', checkbox = '1'),
+        // we simply check if it equals '1'.
+        const showPercentage = urlParams.get('show_percentage') === '1';
+        const showGrade      = urlParams.get('show_grade') === '1';
+        const showStatus     = urlParams.get('show_status') === '1';
+
+        const subjects      = urlParams.getAll('subjects[]');
+        const totalMarksArr = urlParams.getAll('total_marks[]').map(Number);
+        const obtainedArr   = urlParams.getAll('obtained_marks[]').map(Number);
+
+        // ============ EMPTY-STATE GUARD ============
+        if (subjects.length === 0) {
+            document.getElementById('reportCard').innerHTML =
+                '<div style="padding:60px 20px;text-align:center;font-size:18px;color:#555;">' +
+                '<h2 style="margin-bottom:20px;">No result data was provided</h2>' +
+                '<p style="margin-bottom:30px;">Please fill in the form and generate the result again.</p>' +
+                '<a href="index.html" style="display:inline-block;padding:10px 24px;background:#007bff;' +
+                'color:#fff;border-radius:6px;text-decoration:none;">← Back to Form</a>' +
+                '</div>';
+            throw new Error('No subjects supplied');
+        }
+
+        // ============ COMPUTE ============
         let totalObtained = 0;
         let totalMax = 0;
-        const grades = [];
-        const statuses = [];
-        const percentages = [];
+        const grades = [], statuses = [], percentages = [];
 
         for (let i = 0; i < subjects.length; i++) {
-            const percentage = (obtainedMarks[i] / totalMarks[i]) * 100;
-            totalObtained += obtainedMarks[i];
-            totalMax += totalMarks[i];
-            percentages.push(percentage);
-            grades.push(calculateGrade(percentage));
-            statuses.push(calculateStatus(percentage));
+            const pct = safePercentage(obtainedArr[i], totalMarksArr[i]);
+            percentages.push(pct);
+            grades.push(calculateGrade(pct));
+            statuses.push(calculateStatus(pct));
+            totalObtained += obtainedArr[i] || 0;
+            totalMax += totalMarksArr[i] || 0;
         }
 
-        const overallPercentage = (totalObtained / totalMax) * 100;
+        const overallPercentage = safePercentage(totalObtained, totalMax);
         const overallGrade = calculateGrade(overallPercentage);
         const overallStatus = calculateStatus(overallPercentage);
 
-        // Update report card
-        document.getElementById('examTitle').textContent = `${term} Term Exam`;
-        document.getElementById('session').textContent = `Session: ${year}-${parseInt(year) + 1}`;
+        // ============ HEADER INFO ============
+        document.getElementById('examTitle').textContent = term ? `${term} Term Exam` : 'Exam';
+        document.getElementById('session').textContent = `Session: ${year}-${year + 1}`;
         document.getElementById('studentClass').textContent = classValue;
         document.getElementById('studentName').textContent = name;
         document.getElementById('fatherName').textContent = fatherName;
 
-        // Update grades table
-        const gradesTableBody = document.getElementById('gradesTableBody');
-        for (let i = 0; i < subjects.length; i++) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${i + 1}</td>
-                <td>${subjects[i]}</td>
-                <td>${totalMarks[i]}</td>
-                <td>${obtainedMarks[i]}</td>
-                <td>${percentages[i].toFixed(1)}%</td>
-                <td>${grades[i]}</td>
-                <td>${statuses[i]}</td>
-            `;
-            gradesTableBody.appendChild(row);
+        // ============ COLUMN VISIBILITY ============
+        const hide = el => { if (el) el.style.display = 'none'; };
+
+        if (!showPercentage) {
+            hide(document.getElementById('th-percentage'));
+            hide(document.getElementById('sum-th-percentage'));
+            hide(document.getElementById('totalPercentage'));
+        }
+        if (!showGrade) {
+            hide(document.getElementById('th-grade'));
+            hide(document.getElementById('sum-th-grade'));
+            hide(document.getElementById('overallGrade'));
+        }
+        if (!showStatus) {
+            hide(document.getElementById('th-status'));
+            hide(document.getElementById('sum-th-status'));
+            hide(document.getElementById('overallStatus'));
         }
 
-        // Update summary
+        // ============ BUILD GRADES TABLE ============
+        const tbody = document.getElementById('gradesTableBody');
+        for (let i = 0; i < subjects.length; i++) {
+            const row = document.createElement('tr');
+            let html = `
+                <td>${i + 1}</td>
+                <td>${subjects[i]}</td>
+                <td>${totalMarksArr[i]}</td>
+                <td>${obtainedArr[i]}</td>`;
+            if (showPercentage) html += `<td>${percentages[i].toFixed(1)}%</td>`;
+            if (showGrade)      html += `<td>${grades[i]}</td>`;
+            if (showStatus)     html += `<td>${statuses[i]}</td>`;
+            row.innerHTML = html;
+            tbody.appendChild(row);
+        }
+
+        // ============ SUMMARY ============
         document.getElementById('totalMarks').textContent = totalMax;
         document.getElementById('totalObtained').textContent = totalObtained;
         document.getElementById('totalPercentage').textContent = `${overallPercentage.toFixed(1)}%`;
         document.getElementById('overallGrade').textContent = overallGrade;
         document.getElementById('overallStatus').textContent = overallStatus;
 
-        // Update performance chart
+        // ============ CHART ============
         const chart = document.getElementById('performanceChart');
         for (let i = 0; i < subjects.length; i++) {
             const bar = document.createElement('div');
             bar.className = 'bar';
-            bar.style.height = `${percentages[i]}%`;
+            // clamp so label doesn't overflow; keep min height visible
+            bar.style.height = `${Math.max(5, Math.min(percentages[i], 100))}%`;
             bar.innerHTML = `
                 <div class="bar-value">${percentages[i].toFixed(1)}%</div>
-                <div class="bar-label">${subjects[i]}</div>
-            `;
+                <div class="bar-label">${subjects[i]}</div>`;
             chart.appendChild(bar);
-        }
-
-        // Print the report card
-        window.onload = function() {
-            window.print();
         }
     </script>
 </body>
-</html> 
+</html>
