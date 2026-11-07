@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Login - Result Management System</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -28,7 +30,7 @@
             background: white;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 380px;
             position: relative;
@@ -97,12 +99,30 @@
             border-color: #007bff;
             outline: none;
             background: #fff;
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
         }
 
         .form-group input::placeholder {
             color: #95a5a6;
             font-size: 13px;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #7f8c8d;
+            font-size: 14px;
         }
 
         .login-btn {
@@ -124,11 +144,17 @@
         .login-btn:hover {
             background: linear-gradient(90deg, #0056b3, #0099ff);
             transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
         }
 
         .login-btn:active {
             transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .error-message {
@@ -142,7 +168,6 @@
             font-size: 13px;
         }
 
-        /* Mobile Responsive Styles */
         @media (max-width: 480px) {
             body {
                 padding: 10px;
@@ -163,7 +188,7 @@
             }
 
             .form-group input {
-                font-size: 16px; /* Prevents zoom on iOS */
+                font-size: 16px;
                 padding: 12px;
             }
 
@@ -173,7 +198,6 @@
             }
         }
 
-        /* Small Mobile Devices */
         @media (max-width: 360px) {
             .login-container {
                 padding: 15px;
@@ -188,7 +212,6 @@
             }
         }
 
-        /* Landscape Mode */
         @media (max-height: 500px) and (orientation: landscape) {
             body {
                 padding: 10px;
@@ -212,8 +235,8 @@
             }
         }
 
-        /* Prevent zoom on input focus for iOS */
         @supports (-webkit-touch-callout: none) {
+
             input[type="text"],
             input[type="password"] {
                 font-size: 16px;
@@ -221,23 +244,29 @@
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-header">
-            <img src="./img/logo.jpg" alt="School Logo" class="login-logo">
+            <img src="./img/logo.jpg" alt="School Logo" class="login-logo" onerror="this.style.display='none'">
             <h1>Result Management System</h1>
             <p>Welcome back! Please login to your account</p>
         </div>
         <form id="loginForm">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                <input type="text" id="username" name="username" placeholder="Enter your username"
+                    autocomplete="username" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Enter your password"
+                        autocomplete="current-password" required>
+                    <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+                </div>
             </div>
-            <button type="submit" class="login-btn">Sign In</button>
+            <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
             <div id="error-message" class="error-message">
                 <i class="fas fa-exclamation-circle"></i> Invalid username or password
             </div>
@@ -245,27 +274,88 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // ============ CONFIG ============
+        // Replace this hash with SHA-256 of YOUR password.
+        // Generate at: https://emn178.github.io/online-tools/sha256.html
+        const USER_NAME = 'wiser';
+        const PASS_HASH = 'e57f9b17e992cf20ecf0e06c5ac205f42052558718362e76e44b0c3b570717da';
+
+        // Session length: 8 hours
+        const SESSION_MS = 8 * 60 * 60 * 1000;
+
+        // If already logged in and session is valid, skip to index
+        (function checkExisting() {
+            try {
+                const auth = JSON.parse(localStorage.getItem('auth') || '{}');
+                if (auth.ok && Date.now() < auth.exp) {
+                    window.location.href = 'index.html';
+                }
+            } catch (e) { /* ignore */ }
+        })();
+
+        // Show/hide password
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const pwd = document.getElementById('password');
+            const isPwd = pwd.type === 'password';
+            pwd.type = isPwd ? 'text' : 'password';
+            this.classList.toggle('fa-eye', !isPwd);
+            this.classList.toggle('fa-eye-slash', isPwd);
+        });
+
+        // SHA-256 helper
+        async function sha256(str) {
+            if (!window.crypto || !window.crypto.subtle) {
+                // Fallback for non-HTTPS / old browsers
+                return fallbackSha256(str);
+            }
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+            return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Tiny fallback (won't be used on HTTPS) — just returns the raw string
+        // so that you don't get a hard crash. Replace PASS_HASH logic accordingly if needed.
+        function fallbackSha256(s) {
+            console.warn('crypto.subtle unavailable — using insecure fallback');
+            return s;
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
-            const username = document.getElementById('username').value;
+
+            const btn = document.getElementById('loginBtn');
+            const errBox = document.getElementById('error-message');
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
-            
-            // Hardcoded credentials (in a real application, this should be handled server-side)
-            if (username === 'wiser' && password === 'MidWiserian123') {
-                // Set login status
-                localStorage.setItem('isLoggedIn', 'true');
-                // Redirect to the main page
-                window.location.href = 'index.html';
-            } else {
-                const errorMessage = document.getElementById('error-message');
-                errorMessage.style.display = 'block';
-                // Hide error message after 3 seconds
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 3000);
+
+            btn.disabled = true;
+            btn.textContent = 'Signing in...';
+            errBox.style.display = 'none';
+
+            try {
+                const hash = await sha256(password);
+                const ok = (username === USER_NAME) && (hash === PASS_HASH);
+
+                if (ok) {
+                    localStorage.setItem('auth', JSON.stringify({
+                        ok: true,
+                        exp: Date.now() + SESSION_MS
+                    }));
+                    localStorage.setItem('isLoggedIn', 'true'); // kept for compatibility
+                    window.location.href = 'index.html';
+                } else {
+                    errBox.style.display = 'block';
+                    setTimeout(() => { errBox.style.display = 'none'; }, 3000);
+                }
+            } catch (err) {
+                console.error(err);
+                errBox.textContent = 'An error occurred. Please try again.';
+                errBox.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Sign In';
             }
         });
     </script>
 </body>
-</html> 
+
+</html>
