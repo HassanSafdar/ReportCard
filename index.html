@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -13,7 +14,7 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
             background-color: #f5f5f5;
             padding: 20px;
             min-height: 100vh;
@@ -26,7 +27,7 @@
             background: white;
             border: 3px solid #000;
             padding: 30px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             position: relative;
         }
 
@@ -52,7 +53,7 @@
         }
 
         .school-info h2 {
-            font-size: 35px;
+            font-size: 32px;
             margin-bottom: 5px;
             color: #333;
         }
@@ -110,6 +111,11 @@
             font-size: 14px;
             -webkit-appearance: none;
             appearance: none;
+            background: #fff;
+        }
+
+        .student-details select {
+            cursor: pointer;
         }
 
         .student-avatar img {
@@ -136,20 +142,6 @@
             color: #333;
         }
 
-        .btn-add {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 12px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
         .subject-entry {
             display: flex;
             gap: 10px;
@@ -166,6 +158,7 @@
             border-radius: 4px;
             -webkit-appearance: none;
             appearance: none;
+            font-size: 14px;
         }
 
         .remove-subject {
@@ -177,6 +170,28 @@
             cursor: pointer;
             -webkit-appearance: none;
             appearance: none;
+        }
+
+        .remove-subject:hover {
+            background: #c82333;
+        }
+
+        .btn-add {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .btn-add:hover {
+            background: #218838;
         }
 
         .btn-generate {
@@ -195,6 +210,23 @@
 
         .btn-generate:hover {
             background: #0056b3;
+        }
+
+        .btn-csv {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .btn-csv:hover {
+            background: #5a6268;
         }
 
         .logout-btn {
@@ -216,7 +248,48 @@
             background: #c82333;
         }
 
-        /* Mobile Responsive Styles */
+        /* Column toggles */
+        .column-toggles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 15px;
+            margin: 0 auto 15px auto;
+            max-width: 600px;
+            background: #eef4ff;
+            border: 1px dashed #007bff;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .column-toggles .toggle-title {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .column-toggles label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .column-toggles input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+            accent-color: #007bff;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin: 20px 0 10px 0;
+        }
+
+        /* Mobile */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -242,7 +315,7 @@
             }
 
             .school-info h2 {
-                font-size: 28px;
+                font-size: 24px;
             }
 
             .session-info {
@@ -251,7 +324,7 @@
             }
 
             .term-title {
-                font-size: 24px;
+                font-size: 22px;
             }
 
             .student-info-box {
@@ -279,9 +352,10 @@
                 width: 100%;
             }
 
-            .btn-generate {
+            .btn-generate,
+            .btn-csv {
                 width: 100%;
-                padding: 15px;
+                margin: 5px 0;
             }
 
             .logout-btn {
@@ -291,51 +365,79 @@
             }
         }
 
-        /* Small Mobile Devices */
         @media (max-width: 480px) {
             .result-border {
                 padding: 15px;
             }
 
             .school-info h2 {
-                font-size: 24px;
+                font-size: 20px;
             }
 
             .term-title {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .student-details input,
             .student-details select {
-                font-size: 16px; /* Prevents zoom on iOS */
+                font-size: 16px;
             }
         }
 
-        /* Prevent zoom on input focus for iOS */
         @supports (-webkit-touch-callout: none) {
+
             input[type="text"],
             input[type="number"],
             select {
                 font-size: 16px;
             }
         }
+
+        .btn-csv,
+        .btn-bulk {
+            display: inline-block;
+            text-decoration: none;
+            line-height: 1.2;
+        }
+
+        .btn-bulk {
+            background: #28a745;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .btn-bulk:hover {
+            background: #218838;
+        }
     </style>
 </head>
+
 <body>
     <div class="result-border">
         <button id="logoutBtn" class="logout-btn">Logout</button>
+
         <div class="result-header">
-            <img src="./img/logo.jpg" alt="School Logo" class="result-logo">
+            <img src="./img/logo.jpg" alt="School Logo" class="result-logo" onerror="this.style.display='none'">
             <div class="school-info">
                 <h2>THE WISER SCHOOL SYSTEM</h2>
             </div>
             <div class="session-info">
-                <span>Session: <input type="number" name="year" id="year-session" min="2000" max="2100" value="2026" style="width:60px; font-size:1rem; border:1px solid #bbb; border-radius:4px; padding:2px 4px;">-2027</span>
+                <span>
+                    Session:
+                    <input type="number" id="year-session" min="2000" max="2100"
+                        style="width:70px; font-size:1rem; border:1px solid #bbb; border-radius:4px; padding:2px 4px;">
+                    - <span id="session-end">2027</span>
+                </span>
             </div>
         </div>
+
         <div class="term-title">Generate Student Result</div>
-        <form id="resultForm" action="report_card.html" method="get" target="_blank" class="front-form">
+
+        <form id="resultForm" action="report_card.html" method="get" target="_blank">
             <input type="hidden" name="year" id="hidden-year" value="2026">
+
             <div class="student-info-box">
                 <div class="student-details">
                     <table>
@@ -355,8 +457,8 @@
                                     <option value="Class 6">Class 6</option>
                                     <option value="Class 7">Class 7</option>
                                     <option value="Class 8">Class 8</option>
-                                    <option value="Class 7">Class 9</option>
-                                    <option value="Class 8">Class 10</option>
+                                    <option value="Class 9">Class 9</option>
+                                    <option value="Class 10">Class 10</option>
                                 </select>
                             </td>
                         </tr>
@@ -373,86 +475,261 @@
                             <td>
                                 <select name="term" required style="width:120px;">
                                     <option value="">Select</option>
-                                    <option value="First">1st Term</option>
-                                    <option value="Second">2nd Term</option>
-                                    <option value="Final">3rd Term</option>
+                                    <option value="1st">1st Term</option>
+                                    <option value="2nd">2nd Term</option>
+                                    <option value="3rd">3rd Term</option>
                                 </select>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="student-avatar">
-                    <img src="./img/student.webp" alt="Avatar">
+                    <img src="./img/student.webp" alt="Avatar" onerror="this.style.display='none'">
                 </div>
             </div>
+
             <div class="subjects-section">
                 <div class="section-header">
                     <h3>Subject Details</h3>
-                    
                 </div>
                 <div id="subjects-container">
                     <div class="subject-entry">
                         <input type="text" name="subjects[]" placeholder="Subject Name" required>
-                        <input type="number" name="total_marks[]" placeholder="Total Marks" required>
-                        <input type="number" name="obtained_marks[]" placeholder="Obtained Marks" required>
-                        <button type="button" class="remove-subject" style="display: none;">Remove</button>
+                        <input type="number" name="total_marks[]" placeholder="Total Marks" min="1" required>
+                        <input type="number" name="obtained_marks[]" placeholder="Obtained Marks" min="0" required>
+                        <button type="button" class="remove-subject" style="display:none;">Remove</button>
                     </div>
                 </div>
+                <button type="button" id="add-subject" class="btn-add">+ Add Subject</button>
             </div>
-            <div class="form-actions" style="text-align:center; margin:20px 0 10px 0;">
-                <button type="button" id="add-subject" class="btn-add">Add Subject</button>
+
+            <div class="column-toggles">
+                <span class="toggle-title">Include columns:</span>
+
+                <label>
+                    <input type="hidden" name="show_percentage" value="0">
+                    <input type="checkbox" name="show_percentage" value="1" checked>
+                    Percentage
+                </label>
+                <label>
+                    <input type="hidden" name="show_grade" value="0">
+                    <input type="checkbox" name="show_grade" value="1" checked>
+                    Grade
+                </label>
+                <label>
+                    <input type="hidden" name="show_status" value="0">
+                    <input type="checkbox" name="show_status" value="1" checked>
+                    Status
+                </label>
+            </div>
+
+            <div class="form-actions">
                 <button type="submit" class="btn-generate">Generate Result</button>
+                <button type="button" id="csvBtn" class="btn-csv">Download CSV</button>
+                <a href="bulk_print.html" target="_blank" class="btn-csv"
+                    style="display:inline-block; text-decoration:none; background:#28a745; margin-left:10px;">
+                    📄 Bulk Print / PDF
+                </a>
             </div>
         </form>
     </div>
 
     <script>
-        // Check if user is logged in
-        if (!localStorage.getItem('isLoggedIn')) {
+
+        // ============ AUTH CHECK ============
+        (function () {
+            let valid = false;
+            try {
+                const auth = JSON.parse(localStorage.getItem('auth') || '{}');
+                valid = auth.ok && Date.now() < auth.exp;
+            } catch (e) { valid = false; }
+            if (!valid && localStorage.getItem('isLoggedIn') === 'true') valid = true;
+            if (!valid) window.location.href = 'login.html';
+        })();
+
+        // ============ LOGOUT ============
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('auth');
             window.location.href = 'login.html';
+        });
+
+        // ============ YEAR ============
+        (function initYear() {
+            const y = new Date().getFullYear();
+            document.getElementById('year-session').value = y;
+            document.getElementById('hidden-year').value = y;
+            document.getElementById('session-end').textContent = y + 1;
+        })();
+
+        document.getElementById('year-session').addEventListener('input', function () {
+            const v = parseInt(this.value, 10);
+            document.getElementById('hidden-year').value = isNaN(v) ? '' : v;
+            document.getElementById('session-end').textContent = isNaN(v) ? '' : (v + 1);
+        });
+
+        // ============ ADD / REMOVE SUBJECTS ============
+        const container = document.getElementById('subjects-container');
+
+        function refreshRemoveButtons() {
+            const rows = container.querySelectorAll('.subject-entry');
+            rows.forEach(row => {
+                const btn = row.querySelector('.remove-subject');
+                if (btn) btn.style.display = rows.length > 1 ? 'block' : 'none';
+            });
         }
 
-        // Logout functionality
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = 'login.html';
+        document.getElementById('add-subject').addEventListener('click', function () {
+            const row = document.createElement('div');
+            row.className = 'subject-entry';
+            row.innerHTML = `
+            <input type="text" name="subjects[]" placeholder="Subject Name" required>
+            <input type="number" name="total_marks[]" placeholder="Total Marks" min="1" required>
+            <input type="number" name="obtained_marks[]" placeholder="Obtained Marks" min="0" required>
+            <button type="button" class="remove-subject">Remove</button>
+        `;
+            container.appendChild(row);
+            refreshRemoveButtons();
         });
 
-        document.getElementById('year-session').addEventListener('change', function() {
-            document.getElementById('hidden-year').value = this.value;
-        });
-
-        document.getElementById('add-subject').addEventListener('click', function() {
-            const container = document.getElementById('subjects-container');
-            const newRow = document.createElement('div');
-            newRow.className = 'subject-entry';
-            newRow.innerHTML = `
-                <input type="text" name="subjects[]" placeholder="Subject Name" required>
-                <input type="number" name="total_marks[]" placeholder="Total Marks" required>
-                <input type="number" name="obtained_marks[]" placeholder="Obtained Marks" required>
-                <button type="button" class="remove-subject">Remove</button>
-            `;
-            container.appendChild(newRow);
-
-            // Show remove button on first row if there's more than one row
-            const rows = container.querySelectorAll('.subject-entry');
-            if (rows.length > 1) {
-                rows[0].querySelector('.remove-subject').style.display = 'block';
-            }
-        });
-
-        document.getElementById('subjects-container').addEventListener('click', function(e) {
+        container.addEventListener('click', function (e) {
             if (e.target.classList.contains('remove-subject')) {
-                const row = e.target.parentElement;
-                row.remove();
-
-                // Hide remove button on first row if only one row remains
-                const rows = document.querySelectorAll('.subject-entry');
-                if (rows.length === 1) {
-                    rows[0].querySelector('.remove-subject').style.display = 'none';
-                }
+                e.target.closest('.subject-entry').remove();
+                refreshRemoveButtons();
             }
         });
+
+        // ============ STORAGE HELPERS ============
+        const STORE_KEY = 'savedResults';
+
+        function loadSavedResults() {
+            try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
+            catch (e) { return []; }
+        }
+
+        function saveSavedResults(list) {
+            localStorage.setItem(STORE_KEY, JSON.stringify(list));
+        }
+
+        // ============ FORM SUBMIT — validate + save + open preview ============
+        document.getElementById('resultForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const entries = container.querySelectorAll('.subject-entry');
+            if (entries.length === 0) {
+                alert('Please add at least one subject.');
+                return;
+            }
+
+            // Validate all subjects
+            const subjectData = [];
+            for (let i = 0; i < entries.length; i++) {
+                const sEl = entries[i].querySelector('input[name="subjects[]"]');
+                const tEl = entries[i].querySelector('input[name="total_marks[]"]');
+                const oEl = entries[i].querySelector('input[name="obtained_marks[]"]');
+
+                const subject = sEl.value.trim();
+                const total = Number(tEl.value);
+                const obt = Number(oEl.value);
+
+                if (!subject) { alert(`Subject ${i + 1}: name is required.`); sEl.focus(); return; }
+                if (!Number.isFinite(total) || total <= 0) { alert(`Subject ${i + 1}: total marks must be > 0.`); tEl.focus(); return; }
+                if (!Number.isFinite(obt) || obt < 0) { alert(`Subject ${i + 1}: obtained marks must be ≥ 0.`); oEl.focus(); return; }
+                if (obt > total) { alert(`Subject ${i + 1}: obtained (${obt}) cannot exceed total (${total}).`); oEl.focus(); return; }
+
+                subjectData.push({ subject, total, obtained: obt });
+            }
+
+            // Collect student meta
+            const student = {
+                id: 'stu_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+                class: document.querySelector('select[name="class"]').value,
+                name: document.querySelector('input[name="name"]').value.trim(),
+                fatherName: document.querySelector('input[name="father_name"]').value.trim(),
+                term: document.querySelector('select[name="term"]').value,
+                year: parseInt(document.getElementById('hidden-year').value, 10) || new Date().getFullYear(),
+                showPercentage: document.querySelector('input[type="checkbox"][name="show_percentage"]').checked,
+                showGrade: document.querySelector('input[type="checkbox"][name="show_grade"]').checked,
+                showStatus: document.querySelector('input[type="checkbox"][name="show_status"]').checked,
+                subjects: subjectData,
+                savedAt: Date.now()
+            };
+
+            // Save to list
+            const list = loadSavedResults();
+            list.push(student);
+            saveSavedResults(list);
+
+            // Build URL for the preview
+            const params = new URLSearchParams();
+            params.set('class', student.class);
+            params.set('name', student.name);
+            params.set('father_name', student.fatherName);
+            params.set('term', student.term);
+            params.set('year', student.year);
+            params.set('show_percentage', student.showPercentage ? '1' : '0');
+            params.set('show_grade', student.showGrade ? '1' : '0');
+            params.set('show_status', student.showStatus ? '1' : '0');
+            student.subjects.forEach(s => {
+                params.append('subjects[]', s.subject);
+                params.append('total_marks[]', s.total);
+                params.append('obtained_marks[]', s.obtained);
+            });
+
+            // Open preview in new tab
+            window.open('report_card.html?' + params.toString(), '_blank');
+
+            // Notify user
+            showToast(`✅ Saved "${student.name}". Total saved: ${list.length}`);
+        });
+
+        // ============ TOAST ============
+        function showToast(msg, ms = 2800) {
+            let t = document.getElementById('toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'toast';
+                t.style.cssText = `
+                position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+                background: #28a745; color: #fff; padding: 12px 22px; border-radius: 8px;
+                font-size: 15px; box-shadow: 0 4px 14px rgba(0,0,0,.2); z-index: 9999;
+                transition: opacity .3s; opacity: 0;
+            `;
+                document.body.appendChild(t);
+            }
+            t.textContent = msg;
+            t.style.opacity = '1';
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => { t.style.opacity = '0'; }, ms);
+        }
+
+        // ============ CSV EXPORT (unchanged) ============
+        document.getElementById('csvBtn').addEventListener('click', function () {
+            const cls = document.querySelector('select[name="class"]').value || '';
+            const name = document.querySelector('input[name="name"]').value || '';
+            const fname = document.querySelector('input[name="father_name"]').value || '';
+            const term = document.querySelector('select[name="term"]').value || '';
+            const year = document.getElementById('hidden-year').value || '';
+
+            const rows = [['Class', 'Student Name', 'Father Name', 'Term', 'Year', 'Subject', 'Total', 'Obtained']];
+            container.querySelectorAll('.subject-entry').forEach(row => {
+                const [s, t, o] = [...row.querySelectorAll('input')].map(i => i.value);
+                rows.push([cls, name, fname, term, year, s, t, o]);
+            });
+
+            const csv = rows.map(r => r.map(v => `"${String(v || '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `result_${(name || 'student').replace(/\s+/g, '_')}_${Date.now()}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
     </script>
 </body>
-</html> 
+
+</html>
