@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Print — All Students</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            padding: 25px 15px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, .08);
+            padding: 25px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #222;
+        }
+
+        h1 span {
+            color: #007bff;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background .2s;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .select-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: #f0f4ff;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid #eee;
+            padding: 10px 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        tr:hover {
+            background: #fafffa;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #888;
+            font-size: 16px;
+        }
+
+        .empty a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <h1>📄 Bulk Print — <span id="countLabel">0</span> student(s) saved</h1>
+            <div class="actions">
+                <a href="index.html" class="btn btn-secondary">← Add More Students</a>
+            </div>
+        </div>
+
+        <div class="select-bar">
+            <label><input type="checkbox" id="selectAll" checked> Select all</label>
+            <span id="selectedLabel">0 selected</span>
+        </div>
+
+        <div id="listContainer"></div>
+
+        <div class="footer">
+            <button id="clearAllBtn" class="btn btn-danger">🗑️ Clear All</button>
+            <button id="generateBtn" class="btn btn-success">🖨️ Generate PDF (All Selected)</button>
+        </div>
+    </div>
+
+    <script>
+        const STORE_KEY = 'savedResults';
+        let students = [];
+
+        function load() {
+            try { students = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
+            catch (e) { students = []; }
+        }
+
+        function save() {
+            localStorage.setItem(STORE_KEY, JSON.stringify(students));
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        function render() {
+            const container = document.getElementById('listContainer');
+            document.getElementById('countLabel').textContent = students.length;
+
+            if (students.length === 0) {
+                container.innerHTML = `
+                    <div class="empty">
+                        No students saved yet.<br><br>
+                        <a href="index.html">← Go to the form to add students</a>
+                    </div>`;
+                document.getElementById('generateBtn').disabled = true;
+                document.getElementById('clearAllBtn').disabled = true;
+                document.getElementById('selectAll').checked = false;
+                updateSelectedLabel();
+                return;
+            }
+
+            document.getElementById('generateBtn').disabled = false;
+            document.getElementById('clearAllBtn').disabled = false;
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:40px;"></th>
+                            <th>Name</th>
+                            <th>Class</th>
+                            <th>Term</th>
+                            <th>Subjects</th>
+                            <th style="width:90px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            students.forEach((s, i) => {
+                html += `
+                    <tr>
+                        <td><input type="checkbox" class="row-check" data-idx="${i}" checked></td>
+                        <td><b>${escapeHtml(s.name)}</b><br><small style="color:#777;">Father: ${escapeHtml(s.fatherName)}</small></td>
+                        <td>${escapeHtml(s.class)}</td>
+                        <td>${escapeHtml(s.term)} Term (${s.year})</td>
+                        <td>${s.subjects.length}</td>
+                        <td><button class="btn btn-danger del-btn" data-idx="${i}" style="padding:6px 12px; font-size:12px;">Delete</button></td>
+                    </tr>`;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+
+            // Wire up events
+            document.querySelectorAll('.del-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.idx, 10);
+                    if (!confirm(`Delete ${students[idx].name}?`)) return;
+                    students.splice(idx, 1);
+                    save();
+                    render();
+                });
+            });
+
+            document.querySelectorAll('.row-check').forEach(cb => {
+                cb.addEventListener('change', updateSelectedLabel);
+            });
+
+            document.getElementById('selectAll').checked = true;
+            updateSelectedLabel();
+        }
+
+        function getSelectedIndices() {
+            return [...document.querySelectorAll('.row-check:checked')]
+                .map(cb => parseInt(cb.dataset.idx, 10));
+        }
+
+        function updateSelectedLabel() {
+            document.getElementById('selectedLabel').textContent =
+                `${getSelectedIndices().length} selected`;
+        }
+
+        document.getElementById('selectAll').addEventListener('change', function () {
+            document.querySelectorAll('.row-check').forEach(cb => cb.checked = this.checked);
+            updateSelectedLabel();
+        });
+
+        document.getElementById('clearAllBtn').addEventListener('click', function () {
+            if (!confirm('Delete ALL saved students? This cannot be undone.')) return;
+            students = [];
+            save();
+            render();
+        });
+
+        document.getElementById('generateBtn').addEventListener('click', function () {
+            const idxs = getSelectedIndices();
+            if (idxs.length === 0) { alert('Select at least one student.'); return; }
+
+            // Filter students
+            const selected = idxs.map(i => students[i]);
+
+            // Persist just the selection (temporary key)
+            localStorage.setItem('bulkSelection', JSON.stringify(selected));
+
+            window.open('bulk_report.html', '_blank');
+        });
+
+        // Init
+        load();
+        render();
+    </script>
+</body>
+
+</html>
